@@ -1,12 +1,12 @@
 # Task Manager — DevOps Lab #1
 
-Full-stack Task Manager application with REST API, React client, SQLite database, and CI/CD pipeline.
+Full-stack Task Manager: **Spring Boot** REST API, React client, **PostgreSQL**, CI/CD.
 
 ## Architecture
 
 ```
 devops/
-├── server/          # Express.js REST API + SQLite
+├── server/          # Spring Boot REST API + PostgreSQL (JPA)
 ├── client/          # React (Vite) frontend
 └── .github/
     └── workflows/
@@ -15,7 +15,7 @@ devops/
 
 ## Server (REST API)
 
-**Tech stack:** Node.js, Express, better-sqlite3, CORS
+**Tech stack:** Java 21, Spring Boot 3, Spring Data JPA, PostgreSQL
 
 ### Endpoints
 
@@ -29,17 +29,22 @@ devops/
 
 ### Run server
 
+**Требования:** Java 21, Maven, запущенный PostgreSQL.
+
+По умолчанию подключается к `localhost:5432`, БД `taskmanager`, пользователь — текущий пользователь ОС, пароль пустой. Создайте БД один раз, если нет: `CREATE DATABASE taskmanager;`
+
+При необходимости задайте переменные: `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`.
+
 ```bash
 cd server
-npm install
-npm start        # starts on http://localhost:3001
+mvn spring-boot:run   # http://localhost:3001
 ```
 
 ### Run server tests
 
 ```bash
 cd server
-npm test
+mvn test
 ```
 
 ## Client (React)
@@ -65,9 +70,9 @@ npm test
 
 GitHub Actions pipeline with **4 jobs**:
 
-1. **server-build** — installs dependencies and validates server build
-2. **server-test** — runs Jest unit tests (19 tests)
-3. **client-build** — installs dependencies and builds production bundle
-4. **client-test** — runs Vitest unit tests (12 tests)
+1. **server-build** — Java 21, Maven compile
+2. **server-test** — Maven test (JUnit 5, MockMvc)
+3. **client-build** — npm install, vite build
+4. **client-test** — npm test (Vitest)
 
-Pipeline triggers on push/PR to `main` branch.
+Pipeline runs on push/PR to `main`.

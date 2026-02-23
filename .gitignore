@@ -1,5 +1,7 @@
 node_modules/
 dist/
+target/
+server/data/
 *.db
 *.db-shm
 *.db-wal
