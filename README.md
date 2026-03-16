@@ -76,3 +76,48 @@ GitHub Actions pipeline with **4 jobs**:
 4. **client-test** — npm test (Vitest)
 
 Pipeline runs on push/PR to `main`.
+
+---
+
+## Лабораторная №2
+
+Подробный гайд: **[LAB2.md](LAB2.md)** — что сделано по каждой задаче и что осталось сделать (Terraform, Ansible, Docker, реестр).
+
+## Docker (задание 4)
+
+Три сервиса: **server**, **client**, **db** (PostgreSQL).
+
+### Запуск через docker-compose
+
+```bash
+docker compose up --build
+```
+
+Приложение: **http://localhost** (клиент), API проксируется по `/api`. БД: PostgreSQL в контейнере `db`.
+
+### Сборка образов и публикация в реестр
+
+**Docker Hub:**
+
+```bash
+docker compose build
+docker tag taskmanager-server:latest <ваш-login>/taskmanager-server:latest
+docker tag taskmanager-client:latest <ваш-login>/taskmanager-client:latest
+docker push <ваш-login>/taskmanager-server:latest
+docker push <ваш-login>/taskmanager-client:latest
+```
+
+Перед push: `docker login`.
+
+**GitHub Container Registry (ghcr.io):**
+
+```bash
+echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+docker compose build
+docker tag taskmanager-server:latest ghcr.io/lesswixx/taskmanager-server:latest
+docker tag taskmanager-client:latest ghcr.io/lesswixx/taskmanager-client:latest
+docker push ghcr.io/lesswixx/taskmanager-server:latest
+docker push ghcr.io/lesswixx/taskmanager-client:latest
+```
+
+Образ БД можно не пушить (используется официальный `postgres:16-alpine`).
