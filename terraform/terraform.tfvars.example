@@ -1,0 +1,12 @@
+# Скопируйте в terraform.tfvars и заполните (terraform.tfvars в .gitignore)
+# Получить: yc config get cloud-id  и  yc config get folder-id
+# Токен: yc iam create-token (или OAuth из консоли)
+
+yandex_token     = "ваш_токен"
+yandex_cloud_id  = "ваш_cloud_id"
+yandex_folder_id = "ваш_folder_id"
+
+# Опционально:
+# ssh_public_key_path = "~/.ssh/id_rsa.pub"
+# vm_name             = "devops-lab2-vm"
+# zone                = "ru-central1-a"
